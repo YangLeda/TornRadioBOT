@@ -23,7 +23,7 @@ let oneMinuteWarned = false;
 const bot = new eris.Client(BOT_TOKEN);
 
 bot.on("ready", () => {
-	console.log("Connected and ready.");
+	console.log("Bot connected and ready.");
 });
 
 bot.on("messageCreate", async (msg) => {
@@ -61,11 +61,12 @@ bot.on("messageCreate", async (msg) => {
 				let current = json["chain"]["current"];
 				let max = json["chain"]["max"];
 				let timeout = json["chain"]["timeout"];
+				let cooldown = json["chain"]["cooldown"];
 				let timeoutMinutes = Math.floor(timeout / 60);
 				let timeoutSeconds = timeout - timeoutMinutes * 60;
 				let timeoutMinutesPadded = timeoutMinutes.toString().length < 2 ? "0" + timeoutMinutes.toString() : timeoutMinutes.toString();
 				let timeoutSecondsPadded = timeoutSeconds.toString().length < 2 ? "0" + timeoutSeconds.toString() : timeoutSeconds.toString();
-				let chainStr = ":mega: Chain: " + current + "/" + max + "  Timeout: " + timeoutMinutesPadded + ":" + timeoutSecondsPadded;
+				let chainStr = ":mega: Chain: " + current + "/" + max + "  Timeout: " + timeoutMinutesPadded + ":" + timeoutSecondsPadded + (cooldown > 0 ? "  In cooldown" : "");
 				try {
 					await msg.channel.createMessage(chainStr + (isReportingChain ? "" : "\n:robot: Chain reporting is off."));
 				} catch (err) {
@@ -135,6 +136,7 @@ async function handleChain(json) {
 	let current = json["chain"]["current"];
 	let max = json["chain"]["max"];
 	let timeout = json["chain"]["timeout"];
+	let cooldown = json["chain"]["cooldown"];
 	let timeoutMinutes = Math.floor(timeout / 60);
 	let timeoutSeconds = timeout - timeoutMinutes * 60;
 	let timeoutMinutesPadded = timeoutMinutes.toString().length < 2 ? "0" + timeoutMinutes.toString() : timeoutMinutes.toString();
@@ -142,12 +144,19 @@ async function handleChain(json) {
 	let chainStr = ":mega: Chain: " + current + "/" + max + "  Timeout: " + timeoutMinutesPadded + ":" + timeoutSecondsPadded;
 	let messageStr = "";
 
+	if (cooldown > 0) {
+		console.log("handleChain cooldown > 0" + chainStr + " " + cooldown);
+		return;
+	}
+
 	if (lastCurrentChain != current) {
+		console.log("handleChain current changed" + chainStr);
 		twoMinutesWarned = false;
 		oneMinuteWarned = false;
 		lastCurrentChain = current;
 	}
 	if (lastMaxChain != max) {
+		console.log("handleChain max changed" + chainStr);
 		tenHitsWarned = false;
 		fiveHitsWarned = false;
 		twoMinutesWarned = false;
