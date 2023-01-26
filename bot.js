@@ -27,7 +27,7 @@ bot.on("messageCreate", async (msg) => {
 			isReportingChain = true;
 			console.log("STARTED Mentioned start in channel " + msg.channel.id);
 			try {
-				await msg.channel.createMessage("Started.");
+				await msg.channel.createMessage("Chain reporting started in this channel.");
 			} catch (err) {
 				console.warn(err);
 			}
@@ -36,7 +36,7 @@ bot.on("messageCreate", async (msg) => {
 			isReportingChain = false;
 			console.log("STOPPED Mentioned stop in channel " + msg.channel.id);
 			try {
-				await msg.channel.createMessage("Stopped.");
+				await msg.channel.createMessage("Chain reporting stopped in all channel.");
 			} catch (err) {
 				console.warn(err);
 			}
