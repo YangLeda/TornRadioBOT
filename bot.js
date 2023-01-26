@@ -49,7 +49,8 @@ bot.on("messageCreate", async (msg) => {
 					return;
 				}
 				try {
-					await msg.channel.createMessage(`Chain: ${json["chain"]["current"]}/${json["chain"]["max"]} Timeout: ${json["chain"]["timeout"]}`);
+					await msg.channel.createMessage(`Chain: ${json["chain"]["current"]}/${json["chain"]["max"]}  Timeout: ${json["chain"]["timeout"]}`);
+					await msg.channel.createMessage(isReportingChain ? "Chain reporting is on." : "Chain reporting is off.");
 				} catch (err) {
 					console.warn(err);
 				}
@@ -107,7 +108,7 @@ async function handleChain(json) {
 	}
 
 	try {
-		await channel.createMessage(`Chain: ${json["chain"]["current"]}/${json["chain"]["max"]} Timeout: ${json["chain"]["timeout"]}`);
+		await channel.createMessage(`Chain: ${json["chain"]["current"]}/${json["chain"]["max"]}  Timeout: ${json["chain"]["timeout"]}`);
 	} catch (err) {
 		console.warn(err);
 	}
