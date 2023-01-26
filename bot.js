@@ -68,7 +68,7 @@ bot.on("messageCreate", async (msg) => {
 				let timeoutSecondsPadded = timeoutSeconds.toString().length < 2 ? "0" + timeoutSeconds.toString() : timeoutSeconds.toString();
 				let chainStr = ":mega: Chain: " + current + "/" + max + "  Timeout: " + timeoutMinutesPadded + ":" + timeoutSecondsPadded + (cooldown > 0 ? "  In cooldown" : "");
 				try {
-					await msg.channel.createMessage(chainStr + (isReportingChain ? "" : "\n:robot: Chain reporting is off."));
+					await msg.channel.createMessage("@chain alert \n" + chainStr + (isReportingChain ? "" : "\n:robot: Chain reporting is off."));
 				} catch (err) {
 					console.warn(err);
 				}
