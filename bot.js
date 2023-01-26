@@ -170,12 +170,12 @@ async function handleChain(json) {
 	if (max >= MIN_REPORTING_MAX_CHAIN && max - current <= 5) { // Warn 5 hits till bonus
 		if (!fiveHitsWarned) {
 			fiveHitsWarned = true;
-			messageStr = chainStr + "\n" + (max - current) + "hits till bonus hit! Make sure the bonus hit is on enemy faction.";
+			messageStr = chainStr + "\n" + (max - current) + " hits till bonus hit! Make sure the bonus hit is on enemy faction.";
 		}
 	} else if (max >= MIN_REPORTING_MAX_CHAIN && max - current <= 10) {  // Warn 10 hits till bonus
 		if (!tenHitsWarned) {
 			tenHitsWarned = true;
-			messageStr = chainStr + "\n" + (max - current) + "hits till bonus hit! Make sure the bonus hit is on enemy faction.";
+			messageStr = chainStr + "\n" + (max - current) + " hits till bonus hit! Make sure the bonus hit is on enemy faction.";
 		}
 	}
 
