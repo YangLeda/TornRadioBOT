@@ -8,7 +8,7 @@ const TORN_API_KEY = process.env.TORN_API_KEY;
 const FACTION_ID = "41066";
 const FETCH_CHAIN_INTERVAL = 5000;  // 5 seconds
 const MIN_REPORTING_MAX_CHAIN = 25;
-const ROLE_NAME = "@chain alert";
+const ROLE_NAME = "chain alert";
 
 let channelId = "";
 let roleId = "";
@@ -39,9 +39,8 @@ bot.on("messageCreate", async (msg) => {
 			msg.channel.guild.roles.forEach((role) => {
 				if (role.name == ROLE_NAME) {
 					roleId = role.id;
-					console.log(role.id);
+					console.log("Found role id = " + role.id);
 				}
-				console.log(role.name + " " + role.id);
 			});
 			isReportingChain = true;
 			clearAllMemory();
@@ -78,10 +77,6 @@ bot.on("messageCreate", async (msg) => {
 				let timeoutMinutesPadded = timeoutMinutes.toString().length < 2 ? "0" + timeoutMinutes.toString() : timeoutMinutes.toString();
 				let timeoutSecondsPadded = timeoutSeconds.toString().length < 2 ? "0" + timeoutSeconds.toString() : timeoutSeconds.toString();
 				let chainStr = ":mega: Chain: " + current + "/" + max + "  Timeout: " + timeoutMinutesPadded + ":" + timeoutSecondsPadded + (cooldown > 0 ? "  In cooldown" : "");
-
-
-
-
 				try {
 					await msg.channel.createMessage((roleId == "" ? "" : "<@&" + roleId + "> \n") + chainStr + (isReportingChain ? "" : "\n:robot: Chain reporting is off."));
 				} catch (err) {
@@ -206,7 +201,7 @@ async function handleChain(json) {
 	if (messageStr != "") {
 		try {
 			console.log(`handleChain Sending message: [${messageStr}] | ${lastMaxChain} ${tenHitsWarned} ${fiveHitsWarned} ${lastCurrentChain} ${twoMinutesWarned} ${oneMinuteWarned}`);
-			await channel.createMessage("@chain alert \n" + messageStr);
+			await channel.createMessage((roleId == "" ? "" : "<@&" + roleId + "> \n") + messageStr);
 		} catch (err) {
 			console.warn(err);
 		}
