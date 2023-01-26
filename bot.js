@@ -7,7 +7,7 @@ const BOT_TOKEN = process.env.BOT_TOKEN;
 const TORN_API_KEY = process.env.TORN_API_KEY;
 const FACTION_ID = "41066";
 const FETCH_CHAIN_INTERVAL = 5000;  // 5 seconds
-const MIN_REPORTING_MAX_CHAIN = 10;
+const MIN_REPORTING_MAX_CHAIN = 25;
 
 let channelId = "";
 let isReportingChain = false;
