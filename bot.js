@@ -67,6 +67,12 @@ bot.on("messageCreate", async (msg) => {
 				let timeoutMinutesPadded = timeoutMinutes.toString().length < 2 ? "0" + timeoutMinutes.toString() : timeoutMinutes.toString();
 				let timeoutSecondsPadded = timeoutSeconds.toString().length < 2 ? "0" + timeoutSeconds.toString() : timeoutSeconds.toString();
 				let chainStr = ":mega: Chain: " + current + "/" + max + "  Timeout: " + timeoutMinutesPadded + ":" + timeoutSecondsPadded + (cooldown > 0 ? "  In cooldown" : "");
+
+
+				msg.channel.guild.roles.forEach((role) => {
+					console.log(role.name + " " + role.id);
+				});
+
 				try {
 					await msg.channel.createMessage("@chain alert \n" + chainStr + (isReportingChain ? "" : "\n:robot: Chain reporting is off."));
 				} catch (err) {
@@ -179,12 +185,12 @@ async function handleChain(json) {
 	if (max >= MIN_REPORTING_MAX_CHAIN && max - current <= 5) { // Warn 5 hits till bonus
 		if (!fiveHitsWarned) {
 			fiveHitsWarned = true;
-			messageStr = chainStr + "\n" + ":reminder_ribbon: " +  (max - current) + " hits till bonus hit! Make sure the bonus hit is on enemy faction.";
+			messageStr = chainStr + "\n" + ":reminder_ribbon: " + (max - current) + " hits till bonus hit! Make sure the bonus hit is on enemy faction.";
 		}
 	} else if (max >= MIN_REPORTING_MAX_CHAIN && max - current <= 10) {  // Warn 10 hits till bonus
 		if (!tenHitsWarned) {
 			tenHitsWarned = true;
-			messageStr = chainStr + "\n" + ":reminder_ribbon: " +  (max - current) + " hits till bonus hit! Make sure the bonus hit is on enemy faction.";
+			messageStr = chainStr + "\n" + ":reminder_ribbon: " + (max - current) + " hits till bonus hit! Make sure the bonus hit is on enemy faction.";
 		}
 	}
 
