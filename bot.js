@@ -65,7 +65,7 @@ bot.on("messageCreate", async (msg) => {
 				let timeoutSeconds = timeout - timeoutMinutes * 60;
 				let timeoutMinutesPadded = timeoutMinutes.toString().length < 2 ? "0" + timeoutMinutes.toString() : timeoutMinutes.toString();
 				let timeoutSecondsPadded = timeoutSeconds.toString().length < 2 ? "0" + timeoutSeconds.toString() : timeoutSeconds.toString();
-				let chainStr = ":mega:Chain: " + current + "/" + max + "  Timeout: " + timeoutMinutesPadded + ":" + timeoutSecondsPadded;
+				let chainStr = ":mega: Chain: " + current + "/" + max + "  Timeout: " + timeoutMinutesPadded + ":" + timeoutSecondsPadded;
 				try {
 					await msg.channel.createMessage(chainStr + (isReportingChain ? "\nChain reporting is on." : "\nChain reporting is off."));
 				} catch (err) {
@@ -139,7 +139,7 @@ async function handleChain(json) {
 	let timeoutSeconds = timeout - timeoutMinutes * 60;
 	let timeoutMinutesPadded = timeoutMinutes.toString().length < 2 ? "0" + timeoutMinutes.toString() : timeoutMinutes.toString();
 	let timeoutSecondsPadded = timeoutSeconds.toString().length < 2 ? "0" + timeoutSeconds.toString() : timeoutSeconds.toString();
-	let chainStr = ":mega:Chain: " + current + "/" + max + "  Timeout: " + timeoutMinutesPadded + ":" + timeoutSecondsPadded;
+	let chainStr = ":mega: Chain: " + current + "/" + max + "  Timeout: " + timeoutMinutesPadded + ":" + timeoutSecondsPadded;
 	let messageStr = "";
 
 	if (lastCurrentChain != current) {
@@ -158,24 +158,24 @@ async function handleChain(json) {
 	if (max >= MIN_REPORTING_MAX_CHAIN && timeout <= 60) { // Warn 1 minute till timeout
 		if (!oneMinuteWarned) {
 			oneMinuteWarned = true;
-			messageStr = chainStr + "\n" + ":alarm_clock::alarm_clock::alarm_clock:Chain is timing out in 1 minute! Make another hit to keep the chain alive!";
+			messageStr = chainStr + "\n" + ":alarm_clock::alarm_clock::alarm_clock: Chain is timing out in 1 minute! Make another hit to keep the chain alive!";
 		}
 	} else if (max >= MIN_REPORTING_MAX_CHAIN && timeout <= 120) { // Warn 2 minutes till timeout
 		if (!twoMinutesWarned) {
 			twoMinutesWarned = true;
-			messageStr = chainStr + "\n" + ":alarm_clock:Chain is timing out in 2 minutes! Make another hit to keep the chain alive!";
+			messageStr = chainStr + "\n" + ":alarm_clock: Chain is timing out in 2 minutes! Make another hit to keep the chain alive!";
 		}
 	}
 
 	if (max >= MIN_REPORTING_MAX_CHAIN && max - current <= 5) { // Warn 5 hits till bonus
 		if (!fiveHitsWarned) {
 			fiveHitsWarned = true;
-			messageStr = chainStr + "\n" + ":reminder_ribbon::reminder_ribbon::reminder_ribbon:" +  (max - current) + " hits till bonus hit! Make sure the bonus hit is on enemy faction.";
+			messageStr = chainStr + "\n" + ":reminder_ribbon::reminder_ribbon::reminder_ribbon: " +  (max - current) + " hits till bonus hit! Make sure the bonus hit is on enemy faction.";
 		}
 	} else if (max >= MIN_REPORTING_MAX_CHAIN && max - current <= 10) {  // Warn 10 hits till bonus
 		if (!tenHitsWarned) {
 			tenHitsWarned = true;
-			messageStr = chainStr + "\n" + ":reminder_ribbon:" +  (max - current) + " hits till bonus hit! Make sure the bonus hit is on enemy faction.";
+			messageStr = chainStr + "\n" + ":reminder_ribbon: " +  (max - current) + " hits till bonus hit! Make sure the bonus hit is on enemy faction.";
 		}
 	}
 
