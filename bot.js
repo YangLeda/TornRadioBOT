@@ -158,12 +158,12 @@ async function handleChain(json) {
 	if (max >= MIN_REPORTING_MAX_CHAIN && timeout <= 60) { // Warn 1 minute till timeout
 		if (!oneMinuteWarned) {
 			oneMinuteWarned = true;
-			messageStr = chainStr + "\n" + ":alarm_clock::alarm_clock::alarm_clock: Chain is timing out in 1 minute! Make another hit to keep the chain alive!";
+			messageStr = chainStr + "\n" + ":alarm_clock::alarm_clock::alarm_clock: Chain is timing out in :one: minute! Make another hit to keep the chain alive.";
 		}
 	} else if (max >= MIN_REPORTING_MAX_CHAIN && timeout <= 120) { // Warn 2 minutes till timeout
 		if (!twoMinutesWarned) {
 			twoMinutesWarned = true;
-			messageStr = chainStr + "\n" + ":alarm_clock: Chain is timing out in 2 minutes! Make another hit to keep the chain alive!";
+			messageStr = chainStr + "\n" + ":alarm_clock: Chain is timing out in :two: minutes! Make another hit to keep the chain alive.";
 		}
 	}
 
