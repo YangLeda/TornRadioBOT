@@ -44,12 +44,12 @@ bot.on("messageCreate", async (msg) => {
 			console.log("MENTIONED in channel " + msg.channel.id);
 			try {
 				let json = await fetchChain();
-				if (!json || json[chain] == undefined || json[chain][current] == undefined) {
+				if (!json || json["chain"] == undefined || json["chain"]["current"] == undefined) {
 					console.warn("handle mention Failed to read json");
 					return;
 				}
 				try {
-					await msg.channel.createMessage(`Chain: ${json[chain][current]}/${json[chain][max]} Timeout: ${json[chain][timeout]}`);
+					await msg.channel.createMessage(`Chain: ${json["chain"]["current"]}/${json["chain"]["max"]} Timeout: ${json["chain"]["timeout"]}`);
 				} catch (err) {
 					console.warn(err);
 				}
@@ -101,13 +101,13 @@ async function handleChain(json) {
 		console.warn("handleChain Failed to getChannel");
 		return;
 	}
-	if (json[chain] == undefined || json[chain][current] == undefined) {
+	if (json["chain"] == undefined || json["chain"]["current"] == undefined) {
 		console.warn("handleChain Failed to read json");
 		return;
 	}
 
 	try {
-		await channel.createMessage(`Chain: ${json[chain][current]}/${json[chain][max]} ${json[chain][timeout]}`);
+		await channel.createMessage(`Chain: ${json["chain"]["current"]}/${json["chain"]["max"]} Timeout: ${json["chain"]["timeout"]}`);
 	} catch (err) {
 		console.warn(err);
 	}
