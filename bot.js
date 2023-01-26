@@ -190,12 +190,12 @@ async function handleChain(json) {
 
 	if (messageStr != "") {
 		try {
-			console.log("handleChain Sending warning: " + messageStr);
+			console.log(`handleChain Sending message: [${messageStr}] | ${lastMaxChain} ${tenHitsWarned} ${fiveHitsWarned} ${lastCurrentChain} ${twoMinutesWarned} ${oneMinuteWarned}`);
 			await channel.createMessage(messageStr);
 		} catch (err) {
 			console.warn(err);
 		}
 	} else {
-		console.log("handleChain " + chainStr);
+		console.log(`handleChain ${current} ${max} ${timeout} ${cooldown} | ${lastMaxChain} ${tenHitsWarned} ${fiveHitsWarned} ${lastCurrentChain} ${twoMinutesWarned} ${oneMinuteWarned}`);
 	}
 }
