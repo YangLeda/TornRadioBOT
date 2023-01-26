@@ -51,8 +51,12 @@ bot.on("messageCreate", async (msg) => {
 				let current = json["chain"]["current"];
 				let max = json["chain"]["max"];
 				let timeout = json["chain"]["timeout"];
+				let timeoutMinutes = Math.floor(timeout / 60);
+				let timeoutSeconds = timeout - timeoutMinutes * 60;
+				let timeoutMinutesPadded = timeoutMinutes.toString().length < 2 ? "0" + timeoutMinutes.toString() : timeoutMinutes.toString();
+				let timeoutSecondsPadded = timeoutSeconds.toString().length < 2 ? "0" + timeoutSeconds.toString() : timeoutSeconds.toString();
 				try {
-					await msg.channel.createMessage("Chain: " + current + "/" + max + "  Timeout: " + timeout + (isReportingChain ? "\nChain reporting is on." : "\nChain reporting is off."));
+					await msg.channel.createMessage("Chain: " + current + "/" + max + "  Timeout: " + timeoutMinutesPadded + ":" + timeoutSecondsPadded + (isReportingChain ? "\nChain reporting is on." : "\nChain reporting is off."));
 				} catch (err) {
 					console.warn(err);
 				}
