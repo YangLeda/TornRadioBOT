@@ -25,7 +25,7 @@ bot.on("messageCreate", async (msg) => {
 		if (msg.content.includes("start")) {
 			channelId = msg.channel.id;
 			isReportingChain = true;
-			console.log("Mentioned start in channel " + msg.channel.id);
+			console.log("STARTED Mentioned start in channel " + msg.channel.id);
 			try {
 				await msg.channel.createMessage("Started.");
 			} catch (err) {
@@ -34,16 +34,25 @@ bot.on("messageCreate", async (msg) => {
 		} else if (msg.content.includes("stop")) {
 			channelId = "";
 			isReportingChain = false;
-			console.log("Mentioned stop in channel " + msg.channel.id);
+			console.log("STOPPED Mentioned stop in channel " + msg.channel.id);
 			try {
 				await msg.channel.createMessage("Stopped.");
 			} catch (err) {
 				console.warn(err);
 			}
 		} else {
-			console.log("Mentioned in channel " + msg.channel.id);
+			console.log("MENTIONED in channel " + msg.channel.id);
 			try {
-				await msg.channel.createMessage("Hello World!");
+				let json = await fetchChain();
+				if (!json || json[chain] == undefined || json[chain][current] == undefined) {
+					console.warn("handle mention Failed to read json");
+					return;
+				}
+				try {
+					await msg.channel.createMessage(`Chain: ${json[chain][current]}/${json[chain][max]} Timeout: ${json[chain][timeout]}`);
+				} catch (err) {
+					console.warn(err);
+				}
 			} catch (err) {
 				console.warn(err);
 			}
@@ -69,6 +78,7 @@ async function fetchChain() {
 		const json = await res.json();
 		console.log("fetchChain result " + JSON.stringify(json));
 		handleChain(json);
+		return json;
 	} catch (err) {
 		console.warn(err);
 	}
@@ -92,9 +102,13 @@ async function handleChain(json) {
 		console.warn("handleChain Failed to getChannel");
 		return;
 	}
+	if (json[chain] == undefined || json[chain][current] == undefined) {
+		console.warn("handleChain Failed to read json");
+		return;
+	}
 
 	try {
-		await channel.createMessage(JSON.stringify(json));
+		await channel.createMessage(`Chain: ${json[chain][current]}/${json[chain][max]} ${json[chain][timeout]}`);
 	} catch (err) {
 		console.warn(err);
 	}
