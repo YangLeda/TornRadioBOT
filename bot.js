@@ -8,8 +8,10 @@ const TORN_API_KEY = process.env.TORN_API_KEY;
 const FACTION_ID = "41066";
 const FETCH_CHAIN_INTERVAL = 5000;  // 5 seconds
 const MIN_REPORTING_MAX_CHAIN = 25;
+const ROLE_NAME = "@chain alert";
 
 let channelId = "";
+let roleId = "";
 let isReportingChain = false;
 
 let lastMaxChain = 0;
@@ -33,6 +35,14 @@ bot.on("messageCreate", async (msg) => {
 	if (botWasMentioned) {
 		if (msg.content.includes("start")) {
 			channelId = msg.channel.id;
+			roleId = "";
+			msg.channel.guild.roles.forEach((role) => {
+				if (role.name == ROLE_NAME) {
+					roleId = role.id;
+					console.log(role.id);
+				}
+				console.log(role.name + " " + role.id);
+			});
 			isReportingChain = true;
 			clearAllMemory();
 			console.log("STARTED in channel " + msg.channel.id);
@@ -43,6 +53,7 @@ bot.on("messageCreate", async (msg) => {
 			}
 		} else if (msg.content.includes("stop")) {
 			channelId = "";
+			roleId = "";
 			isReportingChain = false;
 			console.log("STOPPED in channel " + msg.channel.id);
 			try {
@@ -69,12 +80,10 @@ bot.on("messageCreate", async (msg) => {
 				let chainStr = ":mega: Chain: " + current + "/" + max + "  Timeout: " + timeoutMinutesPadded + ":" + timeoutSecondsPadded + (cooldown > 0 ? "  In cooldown" : "");
 
 
-				msg.channel.guild.roles.forEach((role) => {
-					console.log(role.name + " " + role.id);
-				});
+
 
 				try {
-					await msg.channel.createMessage("@chain alert \n" + chainStr + (isReportingChain ? "" : "\n:robot: Chain reporting is off."));
+					await msg.channel.createMessage((roleId == "" ? "" : "<@&" + roleId + "> \n") + chainStr + (isReportingChain ? "" : "\n:robot: Chain reporting is off."));
 				} catch (err) {
 					console.warn(err);
 				}
