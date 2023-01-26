@@ -48,8 +48,11 @@ bot.on("messageCreate", async (msg) => {
 					console.warn("handle mention Failed to read json");
 					return;
 				}
+				let current = json["chain"]["current"];
+				let max = json["chain"]["max"];
+				let timeout = json["chain"]["timeout"];
 				try {
-					await msg.channel.createMessage(`Chain: ${json["chain"]["current"]}/${json["chain"]["max"]}  Timeout: ${json["chain"]["timeout"]}` + isReportingChain ? "\nChain reporting is on." : "\nChain reporting is off.");
+					await msg.channel.createMessage("Chain: " + current + "/" + max + "  Timeout: " + timeout + isReportingChain ? "\nChain reporting is on." : "\nChain reporting is off.");
 				} catch (err) {
 					console.warn(err);
 				}
