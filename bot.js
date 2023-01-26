@@ -67,7 +67,7 @@ async function fetchChain() {
 	try {
 		const res = await fetch(`https://api.torn.com/faction/${FACTION_ID}?selections=chain&key=${TORN_API_KEY}`);
 		const json = await res.json();
-		console.log("fetchChain result " + json.stringify());
+		console.log("fetchChain result " + JSON.stringify(json));
 		handleChain(json);
 	} catch (err) {
 		console.warn(err);
@@ -94,7 +94,7 @@ async function handleChain(json) {
 	}
 
 	try {
-		await channel.createMessage(json.stringify());
+		await channel.createMessage(JSON.stringify(json));
 	} catch (err) {
 		console.warn(err);
 	}
