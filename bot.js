@@ -35,18 +35,18 @@ bot.on("messageCreate", async (msg) => {
 			channelId = msg.channel.id;
 			isReportingChain = true;
 			clearAllMemory();
-			console.log("STARTED Mentioned start in channel " + msg.channel.id);
+			console.log("STARTED in channel " + msg.channel.id);
 			try {
-				await msg.channel.createMessage(":robot: Chain reporting started in this channel.");
+				await msg.channel.createMessage(":robot: Chain reporting started in this channel only.");
 			} catch (err) {
 				console.warn(err);
 			}
 		} else if (msg.content.includes("stop")) {
 			channelId = "";
 			isReportingChain = false;
-			console.log("STOPPED Mentioned stop in channel " + msg.channel.id);
+			console.log("STOPPED in channel " + msg.channel.id);
 			try {
-				await msg.channel.createMessage(":robot: Chain reporting stopped in all channel.");
+				await msg.channel.createMessage(":robot: Chain reporting stopped in all channels.");
 			} catch (err) {
 				console.warn(err);
 			}
@@ -150,13 +150,13 @@ async function handleChain(json) {
 	}
 
 	if (lastCurrentChain != current) {
-		console.log("handleChain current changed" + chainStr);
+		console.log("handleChain current changed");
 		twoMinutesWarned = false;
 		oneMinuteWarned = false;
 		lastCurrentChain = current;
 	}
 	if (lastMaxChain != max) {
-		console.log("handleChain max changed" + chainStr);
+		console.log("handleChain max changed");
 		tenHitsWarned = false;
 		fiveHitsWarned = false;
 		twoMinutesWarned = false;
