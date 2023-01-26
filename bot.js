@@ -76,7 +76,6 @@ async function fetchChain() {
 	try {
 		const res = await fetch(`https://api.torn.com/faction/${FACTION_ID}?selections=chain&key=${TORN_API_KEY}`);
 		const json = await res.json();
-		console.log("fetchChain result " + JSON.stringify(json));
 		handleChain(json);
 		return json;
 	} catch (err) {
