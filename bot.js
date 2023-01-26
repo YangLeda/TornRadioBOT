@@ -86,7 +86,6 @@ async function fetchChain() {
 
 async function handleChain(json) {
 	if (!isReportingChain) {
-		console.log("handleChain isReportingChain is false");
 		return;
 	}
 	if (!channelId) {
