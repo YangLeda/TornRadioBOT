@@ -37,7 +37,7 @@ bot.on("messageCreate", async (msg) => {
 			clearAllMemory();
 			console.log("STARTED Mentioned start in channel " + msg.channel.id);
 			try {
-				await msg.channel.createMessage("Chain reporting started in this channel.");
+				await msg.channel.createMessage(":robot: Chain reporting started in this channel.");
 			} catch (err) {
 				console.warn(err);
 			}
@@ -46,7 +46,7 @@ bot.on("messageCreate", async (msg) => {
 			isReportingChain = false;
 			console.log("STOPPED Mentioned stop in channel " + msg.channel.id);
 			try {
-				await msg.channel.createMessage("Chain reporting stopped in all channel.");
+				await msg.channel.createMessage(":robot: Chain reporting stopped in all channel.");
 			} catch (err) {
 				console.warn(err);
 			}
@@ -67,7 +67,7 @@ bot.on("messageCreate", async (msg) => {
 				let timeoutSecondsPadded = timeoutSeconds.toString().length < 2 ? "0" + timeoutSeconds.toString() : timeoutSeconds.toString();
 				let chainStr = ":mega: Chain: " + current + "/" + max + "  Timeout: " + timeoutMinutesPadded + ":" + timeoutSecondsPadded;
 				try {
-					await msg.channel.createMessage(chainStr + (isReportingChain ? "" : "\nChain reporting is off."));
+					await msg.channel.createMessage(chainStr + (isReportingChain ? "" : "\n:robot: Chain reporting is off."));
 				} catch (err) {
 					console.warn(err);
 				}
