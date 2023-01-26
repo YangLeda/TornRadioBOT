@@ -1,0 +1,23 @@
+{
+  "name": "tornradiobot",
+  "version": "1.0.0",
+  "description": "Discord bot for Torn.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/YangLeda/TornRadioBOT.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/YangLeda/TornRadioBOT/issues"
+  },
+  "homepage": "https://github.com/YangLeda/TornRadioBOT#readme",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "eris": "^0.17.1"
+  }
+}
