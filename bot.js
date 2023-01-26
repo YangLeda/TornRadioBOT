@@ -67,7 +67,7 @@ bot.on("messageCreate", async (msg) => {
 				let timeoutSecondsPadded = timeoutSeconds.toString().length < 2 ? "0" + timeoutSeconds.toString() : timeoutSeconds.toString();
 				let chainStr = ":mega: Chain: " + current + "/" + max + "  Timeout: " + timeoutMinutesPadded + ":" + timeoutSecondsPadded;
 				try {
-					await msg.channel.createMessage(chainStr + (isReportingChain ? "\nChain reporting is on." : "\nChain reporting is off."));
+					await msg.channel.createMessage(chainStr + (isReportingChain ? "" : "\n  Chain reporting is off."));
 				} catch (err) {
 					console.warn(err);
 				}
