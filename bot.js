@@ -191,7 +191,7 @@ async function handleChain(json) {
 	if (messageStr != "") {
 		try {
 			console.log(`handleChain Sending message: [${messageStr}] | ${lastMaxChain} ${tenHitsWarned} ${fiveHitsWarned} ${lastCurrentChain} ${twoMinutesWarned} ${oneMinuteWarned}`);
-			await channel.createMessage(messageStr);
+			await channel.createMessage("@chain alert \n" + messageStr);
 		} catch (err) {
 			console.warn(err);
 		}
