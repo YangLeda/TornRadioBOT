@@ -167,7 +167,7 @@ async function handleChain(json) {
 	if (max >= MIN_REPORTING_MAX_CHAIN && timeout <= 60) { // Warn 1 minute till timeout
 		if (!oneMinuteWarned) {
 			oneMinuteWarned = true;
-			messageStr = chainStr + "\n" + ":alarm_clock::alarm_clock::alarm_clock: Chain is timing out in :one: minute! Make another hit to keep the chain alive.";
+			messageStr = chainStr + "\n" + ":alarm_clock: Chain is timing out in :one: minute! Make another hit to keep the chain alive.";
 		}
 	} else if (max >= MIN_REPORTING_MAX_CHAIN && timeout <= 120) { // Warn 2 minutes till timeout
 		if (!twoMinutesWarned) {
@@ -179,7 +179,7 @@ async function handleChain(json) {
 	if (max >= MIN_REPORTING_MAX_CHAIN && max - current <= 5) { // Warn 5 hits till bonus
 		if (!fiveHitsWarned) {
 			fiveHitsWarned = true;
-			messageStr = chainStr + "\n" + ":reminder_ribbon::reminder_ribbon::reminder_ribbon: " +  (max - current) + " hits till bonus hit! Make sure the bonus hit is on enemy faction.";
+			messageStr = chainStr + "\n" + ":reminder_ribbon: " +  (max - current) + " hits till bonus hit! Make sure the bonus hit is on enemy faction.";
 		}
 	} else if (max >= MIN_REPORTING_MAX_CHAIN && max - current <= 10) {  // Warn 10 hits till bonus
 		if (!tenHitsWarned) {
