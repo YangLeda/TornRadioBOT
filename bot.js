@@ -111,9 +111,13 @@ async function handleChain(json) {
 	let current = json["chain"]["current"];
 	let max = json["chain"]["max"];
 	let timeout = json["chain"]["timeout"];
+	let timeoutMinutes = Math.floor(timeout / 60);
+	let timeoutSeconds = timeout - timeoutMinutes * 60;
+	let timeoutMinutesPadded = timeoutMinutes.toString().length < 2 ? "0" + timeoutMinutes.toString() : timeoutMinutes.toString();
+	let timeoutSecondsPadded = timeoutSeconds.toString().length < 2 ? "0" + timeoutSeconds.toString() : timeoutSeconds.toString();
 
 	try {
-		await channel.createMessage(`Chain: ${json["chain"]["current"]}/${json["chain"]["max"]}  Timeout: ${json["chain"]["timeout"]}`);
+		await channel.createMessage("Chain: " + current + "/" + max + "  Timeout: " + timeoutMinutesPadded + ":" + timeoutSecondsPadded);
 	} catch (err) {
 		console.warn(err);
 	}
