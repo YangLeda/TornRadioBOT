@@ -18,6 +18,8 @@
   "homepage": "https://github.com/YangLeda/TornRadioBOT#readme",
   "dependencies": {
     "dotenv": "^16.0.3",
-    "eris": "^0.17.1"
-  }
+    "eris": "^0.17.1",
+    "node-fetch": "^3.3.0"
+  },
+  "type": "module"
 }
