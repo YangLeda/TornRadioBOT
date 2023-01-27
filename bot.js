@@ -65,7 +65,7 @@ bot.on("messageCreate", async (msg) => {
 			try {
 				let json = await fetchChain();
 				if (!json || json["chain"] == undefined || json["chain"]["current"] == undefined) {
-					console.warn("handle mention Failed to read json" + getDateStr());
+					console.warn("handle mention Failed to read json" + JSON.stringify(json) + getDateStr());
 					return;
 				}
 				let current = json["chain"]["current"];
