@@ -151,11 +151,11 @@ async function handleChain(json) {
 	let timeoutSeconds = timeout - timeoutMinutes * 60;
 	let timeoutMinutesPadded = timeoutMinutes.toString().length < 2 ? "0" + timeoutMinutes.toString() : timeoutMinutes.toString();
 	let timeoutSecondsPadded = timeoutSeconds.toString().length < 2 ? "0" + timeoutSeconds.toString() : timeoutSeconds.toString();
-	let chainStr = ":mega: Chain: " + current + "/" + max + "  Timeout: " + timeoutMinutesPadded + ":" + timeoutSecondsPadded;
+	let chainStr = ":mega: Chain: " + current + "/" + max + "  Timeout: " + timeoutMinutesPadded + ":" + timeoutSecondsPadded + getDateStr();
 	let messageStr = "";
 
 	if (cooldown > 0) {
-		console.log("handleChain cooldown > 0" + chainStr + " " + cooldown + getDateStr());
+		console.log("handleChain cooldown > 0" + chainStr + " " + cooldown);
 		return;
 	}
 
@@ -200,8 +200,8 @@ async function handleChain(json) {
 
 	if (messageStr != "") {
 		try {
-			console.log(`handleChain Sending message: [${messageStr}] | ${lastMaxChain} ${tenHitsWarned} ${fiveHitsWarned} ${lastCurrentChain} ${twoMinutesWarned} ${oneMinuteWarned} ${getDateStr()}`);
-			await channel.createMessage((roleId == "" ? "" : "<@&" + roleId + "> \n") + messageStr + getDateStr());
+			console.log(`handleChain Sending message: [${messageStr}] | ${lastMaxChain} ${tenHitsWarned} ${fiveHitsWarned} ${lastCurrentChain} ${twoMinutesWarned} ${oneMinuteWarned}}`);
+			await channel.createMessage((roleId == "" ? "" : "<@&" + roleId + "> \n") + messageStr);
 		} catch (err) {
 			console.warn(err);
 		}
