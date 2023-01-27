@@ -212,5 +212,5 @@ async function handleChain(json) {
 
 function getDateStr() {  //  Example:  TCT: 09:48:05
 	let date = new Date(Date.now());
-	return "  TCT: " + getUTCHours() + ":" + getUTCMinutes() + ":" + getUTCSeconds();
+	return "  TCT: " + date.getUTCHours() + ":" + date.getUTCMinutes() + ":" + date.getUTCSeconds();
 }
