@@ -25,7 +25,7 @@ let oneMinuteWarned = false;
 const bot = new eris.Client(BOT_TOKEN);
 
 bot.on("ready", () => {
-	console.log("Bot connected and ready.");
+	console.log("Bot connected and ready." + getDateStr());
 });
 
 bot.on("messageCreate", async (msg) => {
@@ -39,12 +39,12 @@ bot.on("messageCreate", async (msg) => {
 			msg.channel.guild.roles.forEach((role) => {
 				if (role.name == ROLE_NAME) {
 					roleId = role.id;
-					console.log("Found role id = " + role.id);
+					console.log("Found role id = " + role.id + getDateStr());
 				}
 			});
 			isReportingChain = true;
 			clearAllMemory();
-			console.log("STARTED in channel " + msg.channel.id);
+			console.log("STARTED in channel " + msg.channel.id + getDateStr());
 			try {
 				await msg.channel.createMessage(":robot: Chain reporting started in this channel only.");
 			} catch (err) {
@@ -54,18 +54,18 @@ bot.on("messageCreate", async (msg) => {
 			channelId = "";
 			roleId = "";
 			isReportingChain = false;
-			console.log("STOPPED in channel " + msg.channel.id);
+			console.log("STOPPED in channel " + msg.channel.id + getDateStr());
 			try {
 				await msg.channel.createMessage(":robot: Chain reporting stopped in all channels.");
 			} catch (err) {
 				console.warn(err);
 			}
 		} else {
-			console.log("MENTIONED in channel " + msg.channel.id);
+			console.log("MENTIONED in channel " + msg.channel.id + getDateStr());
 			try {
 				let json = await fetchChain();
 				if (!json || json["chain"] == undefined || json["chain"]["current"] == undefined) {
-					console.warn("handle mention Failed to read json");
+					console.warn("handle mention Failed to read json" + getDateStr());
 					return;
 				}
 				let current = json["chain"]["current"];
@@ -78,7 +78,7 @@ bot.on("messageCreate", async (msg) => {
 				let timeoutSecondsPadded = timeoutSeconds.toString().length < 2 ? "0" + timeoutSeconds.toString() : timeoutSeconds.toString();
 				let chainStr = ":mega: Chain: " + current + "/" + max + "  Timeout: " + timeoutMinutesPadded + ":" + timeoutSecondsPadded + (cooldown > 0 ? "  In cooldown" : "");
 				try {
-					await msg.channel.createMessage(chainStr + (isReportingChain ? "" : "\n:robot: Chain reporting is off."));
+					await msg.channel.createMessage(chainStr + getDateStr() + (isReportingChain ? "" : "\n:robot: Chain reporting is off."));
 				} catch (err) {
 					console.warn(err);
 				}
@@ -126,20 +126,20 @@ async function handleChain(json) {
 		return;
 	}
 	if (!channelId) {
-		console.warn("handleChain Empty channel ID");
+		console.warn("handleChain Empty channel ID" + getDateStr());
 		return;
 	}
 	if (!json) {
-		console.warn("handleChain Empty json");
+		console.warn("handleChain Empty json" + getDateStr());
 		return;
 	}
 	let channel = bot.getChannel(channelId);
 	if (!channel) {
-		console.warn("handleChain Failed to getChannel");
+		console.warn("handleChain Failed to getChannel" + getDateStr());
 		return;
 	}
 	if (json["chain"] == undefined || json["chain"]["current"] == undefined) {
-		console.warn("handleChain Failed to read json");
+		console.warn("handleChain Failed to read json" + getDateStr());
 		return;
 	}
 
@@ -155,18 +155,18 @@ async function handleChain(json) {
 	let messageStr = "";
 
 	if (cooldown > 0) {
-		console.log("handleChain cooldown > 0" + chainStr + " " + cooldown);
+		console.log("handleChain cooldown > 0" + chainStr + " " + cooldown + getDateStr());
 		return;
 	}
 
 	if (lastCurrentChain != current) {
-		console.log("handleChain current changed");
+		console.log("handleChain current changed" + getDateStr());
 		twoMinutesWarned = false;
 		oneMinuteWarned = false;
 		lastCurrentChain = current;
 	}
 	if (lastMaxChain != max) {
-		console.log("handleChain max changed");
+		console.log("handleChain max changed" + getDateStr());
 		tenHitsWarned = false;
 		fiveHitsWarned = false;
 		twoMinutesWarned = false;
@@ -200,12 +200,17 @@ async function handleChain(json) {
 
 	if (messageStr != "") {
 		try {
-			console.log(`handleChain Sending message: [${messageStr}] | ${lastMaxChain} ${tenHitsWarned} ${fiveHitsWarned} ${lastCurrentChain} ${twoMinutesWarned} ${oneMinuteWarned}`);
-			await channel.createMessage((roleId == "" ? "" : "<@&" + roleId + "> \n") + messageStr);
+			console.log(`handleChain Sending message: [${messageStr}] | ${lastMaxChain} ${tenHitsWarned} ${fiveHitsWarned} ${lastCurrentChain} ${twoMinutesWarned} ${oneMinuteWarned} ${getDateStr()}`);
+			await channel.createMessage((roleId == "" ? "" : "<@&" + roleId + "> \n") + messageStr + getDateStr());
 		} catch (err) {
 			console.warn(err);
 		}
 	} else {
-		console.log(`handleChain ${current} ${max} ${timeout} ${cooldown} | ${lastMaxChain} ${tenHitsWarned} ${fiveHitsWarned} ${lastCurrentChain} ${twoMinutesWarned} ${oneMinuteWarned}`);
+		console.log(`handleChain ${current} ${max} ${timeout} ${cooldown} | ${lastMaxChain} ${tenHitsWarned} ${fiveHitsWarned} ${lastCurrentChain} ${twoMinutesWarned} ${oneMinuteWarned} ${getDateStr()}`);
 	}
+}
+
+function getDateStr() {  //  Example:  TCT: 09:48:05
+	let date = new Date(Date.now());
+	return "  TCT: " + getUTCHours() + ":" + getUTCMinutes() + ":" + getUTCSeconds();
 }
