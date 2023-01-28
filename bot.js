@@ -260,7 +260,7 @@ async function handleWar(json) {
 		return;
 	}
 	let warStartTimestamp = parseInt(rwJson[Object.keys(rwJson)[0]]["war"]["start"]);
-	let countDown = warStartTimestamp - Date.now();
+	let countDown = warStartTimestamp - Math.floor(Date.now() / 1000);
 	if (countDown <= 0) {
 		console.log("handleWar war ended " + warStartTimestamp + " " + Date.now() + getDateStr());
 		return;
