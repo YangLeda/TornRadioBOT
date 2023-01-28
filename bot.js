@@ -7,6 +7,7 @@ const BOT_TOKEN = process.env.BOT_TOKEN;
 const TORN_API_KEY = process.env.TORN_API_KEY;
 const FACTION_ID = "41066";
 const FETCH_CHAIN_INTERVAL = 5000;  // 5 seconds
+const FETCH_WAR_INTERVAL = 300000;  // 5 minutes
 const MIN_REPORTING_MAX_CHAIN = 50;
 const ROLE_NAME = "chain alert";
 
@@ -109,6 +110,11 @@ fetchChain();
 setInterval(async () => {
 	fetchChain();
 }, FETCH_CHAIN_INTERVAL);
+
+fetchWar();
+setInterval(async () => {
+	fetchWar();
+}, FETCH_WAR_INTERVAL);
 
 async function fetchChain() {
 	try {
@@ -216,4 +222,59 @@ function getDateStr() {  //  Example:  TCT: 09:48:05
 	let minute = date.getUTCMinutes().toString().length < 2 ? "0" + date.getUTCMinutes() : date.getUTCMinutes();
 	let second = date.getUTCSeconds().toString().length < 2 ? "0" + date.getUTCSeconds() : date.getUTCSeconds();
 	return "  TCT: " + hour + ":" + minute + ":" + second;
+}
+
+async function fetchWar() {
+	try {
+		const res = await fetch(`https://api.torn.com/faction/${FACTION_ID}?selections=war&key=${TORN_API_KEY}`);
+		const json = await res.json();
+		handleWar(json);
+		return json;
+	} catch (err) {
+		console.warn(err);
+	}
+}
+
+async function handleWar(json) {
+	if (!channelId) {
+		console.warn("handleWar Empty channel ID" + getDateStr());
+		return;
+	}
+	if (!json) {
+		console.warn("handleWar Empty json" + getDateStr());
+		return;
+	}
+	let channel = bot.getChannel(channelId);
+	if (!channel) {
+		console.warn("handleWar Failed to getChannel" + getDateStr());
+		return;
+	}
+	if (json["ranked_wars"] == undefined) {
+		console.warn("handleWar Failed to read json" + getDateStr());
+		return;
+	}
+	let rwJson = json["ranked_wars"];
+	if (Object.keys(rwJson).length <= 0 || Object.keys(rwJson)[0] == undefined) {
+		console.warn("handleWar Failed to read rwJson" + getDateStr());
+		return;
+	}
+	let warStartTimestamp = rwJson[Object.keys(rwJson)[0]]["war"];
+	let countDown = warStartTimestamp - Date.now();
+	if (countDown <= 0) {
+		console.log("handleWar war ended" + getDateStr());
+		return;
+	}
+	const hours = Math.floor(countDown / 3600000);
+	const minutes = Math.floor((countDown % 3600000) / 60000);
+	if ((hours == 23 && minutes >= 55 && minutes < 60) || (hours == 1 && minutes >= 55 && minutes < 60) || (hours == 0 && minutes >= 55 && minutes < 60) || (hours == 0 && minutes >= 7 && minutes < 12)) {
+		try {
+			let messageStr = ":crossed_swords: Ranked war will begin in " + (hours > 0 ? "" + hours + " hours" : "") + (minutes > 0 ? ", " + minutes + " minutes." : ".");
+			console.log(`handleWar Sending message: [${messageStr}]`);
+			await channel.createMessage((roleId == "" ? "" : "<@&" + roleId + "> \n") + messageStr);
+		} catch (err) {
+			console.warn(err);
+		}
+	} else {
+		console.log("handleWar " + hours + ":" + minutes + getDateStr());
+	}
 }
