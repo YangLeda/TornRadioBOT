@@ -259,7 +259,7 @@ async function handleWar(json) {
 		console.warn("handleWar Failed to read rwJson" + getDateStr());
 		return;
 	}
-	let warStartTimestamp = parseInt(rwJson[Object.keys(rwJson)[0]]["war"]);
+	let warStartTimestamp = parseInt(rwJson[Object.keys(rwJson)[0]]["war"]["start"]);
 	let countDown = warStartTimestamp - Date.now();
 	if (countDown <= 0) {
 		console.log("handleWar war ended" + getDateStr());
