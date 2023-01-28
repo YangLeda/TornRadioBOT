@@ -227,7 +227,7 @@ function getDateStr() {  //  Example:  TCT: 09:48:05
 
 async function fetchWar() {
 	try {
-		const res = await fetch(`https://api.torn.com/faction/${FACTION_ID}?selections=war&key=${TORN_API_KEY}`);
+		const res = await fetch(`https://api.torn.com/faction/${FACTION_ID}?selections=basic&key=${TORN_API_KEY}`);
 		const json = await res.json();
 		handleWar(json);
 		return json;
