@@ -267,7 +267,7 @@ async function handleWar(json) {
 	}
 	const hours = Math.floor(countDown / 3600000);
 	const minutes = Math.floor((countDown % 3600000) / 60000);
-	if ((hours == 23 && minutes >= 55 && minutes < 60) || (hours == 1 && minutes >= 55 && minutes < 60) || (hours == 0 && minutes >= 55 && minutes < 60) || (hours == 0 && minutes >= 7 && minutes < 12)) {
+	if ((hours == 9 && minutes >= 55 && minutes < 60) || (hours == 1 && minutes >= 55 && minutes < 60) || (hours == 0 && minutes >= 55 && minutes < 60) || (hours == 0 && minutes >= 7 && minutes < 12)) {
 		try {
 			let messageStr = ":crossed_swords: Ranked war will begin in " + (hours > 0 ? "" + hours + " hours" : "") + (minutes > 0 ? ", " + minutes + " minutes." : ".");
 			console.log(`handleWar Sending message: [${messageStr}]`);
