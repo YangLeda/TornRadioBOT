@@ -262,7 +262,7 @@ async function handleWar(json) {
 	let warStartTimestamp = parseInt(rwJson[Object.keys(rwJson)[0]]["war"]["start"]);
 	let countDown = warStartTimestamp - Date.now();
 	if (countDown <= 0) {
-		console.log("handleWar war ended" + getDateStr());
+		console.log("handleWar war ended " + warStartTimestamp + " " + Date.now() + getDateStr());
 		return;
 	}
 	const hours = Math.floor(countDown / 3600000);
