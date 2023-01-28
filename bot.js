@@ -7,8 +7,7 @@ const BOT_TOKEN = process.env.BOT_TOKEN;
 const TORN_API_KEY = process.env.TORN_API_KEY;
 const FACTION_ID = "41066";
 const FETCH_CHAIN_INTERVAL = 5000;  // 5 seconds
-//const FETCH_WAR_INTERVAL = 300000;  // 5 minutes
-const FETCH_WAR_INTERVAL = 5000;  // 5 seconds
+const FETCH_WAR_INTERVAL = 300000;  // 5 minutes
 const MIN_REPORTING_MAX_CHAIN = 50;
 const ROLE_NAME = "chain alert";
 
@@ -271,7 +270,7 @@ async function handleWar(json) {
 		try {
 			let messageStr = ":crossed_swords: Ranked war will begin in " + (hours > 0 ? "" + hours + " hours" : "") + (minutes > 0 ? ", " + minutes + " minutes." : ".");
 			console.log(`handleWar Sending message: [${messageStr}]`);
-			await channel.createMessage((roleId == "" ? "" : "<@&" + roleId + "> \n") + messageStr);
+			await channel.createMessage((roleId == "" ? "" : "<@&" + roleId + "> \n") + messageStr + getDateStr());
 		} catch (err) {
 			console.warn(err);
 		}
