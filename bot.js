@@ -206,13 +206,13 @@ async function handleChain(json) {
 
 	if (messageStr != "") {
 		try {
-			console.log(`handleChain Sending message: [${messageStr}] | ${lastMaxChain} ${tenHitsWarned} ${fiveHitsWarned} ${lastCurrentChain} ${twoMinutesWarned} ${oneMinuteWarned}}`);
+			console.log(`handleChain Sending message: [${messageStr}]`);
 			await channel.createMessage((roleId == "" ? "" : "<@&" + roleId + "> \n") + messageStr);
 		} catch (err) {
 			console.warn(err);
 		}
 	} else {
-		console.log(`handleChain ${current} ${max} ${timeout} ${cooldown} | ${lastMaxChain} ${tenHitsWarned} ${fiveHitsWarned} ${lastCurrentChain} ${twoMinutesWarned} ${oneMinuteWarned} ${getDateStr()}`);
+		console.log(`handleChain ${current} ${max} ${timeout} ${cooldown} ${getDateStr()}`);
 	}
 }
 
@@ -237,7 +237,6 @@ async function fetchWar() {
 
 async function handleWar(json) {
 	if (!channelId) {
-		console.warn("handleWar Empty channel ID" + getDateStr());
 		return;
 	}
 	if (!json) {
@@ -268,7 +267,7 @@ async function handleWar(json) {
 	const minutes = Math.floor((countDown % 3600000) / 60000);
 	if ((hours == 23 && minutes >= 55 && minutes < 60) || (hours == 4 && minutes >= 55 && minutes < 60) || (hours == 0 && minutes >= 55 && minutes < 60) || (hours == 0 && minutes >= 7 && minutes < 12)) {
 		try {
-			let messageStr = ":crossed_swords: Ranked war will begin in " + (hours > 0 ? "" + hours + " hours" : "") + (minutes > 0 ? ", " + minutes + " minutes." : ".");
+			let messageStr = ":crossed_swords: Ranked war will begin in " + (hours > 0 ? "" + hours + " hours, " : "") + (minutes > 0 ? "" + minutes + " minutes." : ".");
 			console.log(`handleWar Sending message: [${messageStr}]`);
 			await channel.createMessage((roleId == "" ? "" : "<@&" + roleId + "> \n") + messageStr + getDateStr());
 		} catch (err) {
