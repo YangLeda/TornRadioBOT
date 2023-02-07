@@ -26,7 +26,7 @@ let oneMinuteWarned = false;
 const bot = new eris.Client(BOT_TOKEN);
 
 bot.on("ready", () => {
-	console.log("Bot connected and ready." + getDateStr());
+	console.log("Bot connected and ready.  " + getDateStr());
 });
 
 bot.on("messageCreate", async (msg) => {
@@ -40,12 +40,12 @@ bot.on("messageCreate", async (msg) => {
 			msg.channel.guild.roles.forEach((role) => {
 				if (role.name == ROLE_NAME) {
 					roleId = role.id;
-					console.log("Found role id = " + role.id + getDateStr());
+					console.log("Found role id = " + role.id + " " + getDateStr());
 				}
 			});
 			isReportingChain = true;
 			clearAllMemory();
-			console.log("STARTED in channel " + msg.channel.id + getDateStr());
+			console.log("STARTED in channel " + msg.channel.id + " " +  getDateStr());
 			try {
 				await msg.channel.createMessage(":robot: Chain reporting started in this channel only.");
 			} catch (err) {
@@ -55,18 +55,18 @@ bot.on("messageCreate", async (msg) => {
 			channelId = "";
 			roleId = "";
 			isReportingChain = false;
-			console.log("STOPPED in channel " + msg.channel.id + getDateStr());
+			console.log("STOPPED in channel " + msg.channel.id + " " +  getDateStr());
 			try {
 				await msg.channel.createMessage(":robot: Chain reporting stopped in all channels.");
 			} catch (err) {
 				console.warn(err);
 			}
 		} else {
-			console.log("MENTIONED in channel " + msg.channel.id + getDateStr());
+			console.log("MENTIONED in channel " + msg.channel.id + " " +  getDateStr());
 			try {
 				let json = await fetchChain();
 				if (!json || json["chain"] == undefined || json["chain"]["current"] == undefined) {
-					console.warn("handle mention Failed to read json" + JSON.stringify(json) + getDateStr());
+					console.warn("handle mention Failed to read json" + JSON.stringify(json) + " " +  getDateStr());
 					return;
 				}
 				let current = json["chain"]["current"];
@@ -79,7 +79,7 @@ bot.on("messageCreate", async (msg) => {
 				let timeoutSecondsPadded = timeoutSeconds.toString().length < 2 ? "0" + timeoutSeconds.toString() : timeoutSeconds.toString();
 				let chainStr = ":mega: Chain: " + current + "/" + max + "  Timeout: " + timeoutMinutesPadded + ":" + timeoutSecondsPadded + (cooldown > 0 ? "  In cooldown" : "");
 				try {
-					await msg.channel.createMessage(chainStr + getDateStr() + (isReportingChain ? "" : "\n:robot: Chain reporting is off."));
+					await msg.channel.createMessage(getDateStr() + "\n" + chainStr + (isReportingChain ? "" : "\n:robot: Chain reporting is off."));
 				} catch (err) {
 					console.warn(err);
 				}
@@ -132,20 +132,20 @@ async function handleChain(json) {
 		return;
 	}
 	if (!channelId) {
-		console.warn("handleChain Empty channel ID" + getDateStr());
+		console.warn("handleChain Empty channel ID  " + getDateStr());
 		return;
 	}
 	if (!json) {
-		console.warn("handleChain Empty json" + getDateStr());
+		console.warn("handleChain Empty json  " + getDateStr());
 		return;
 	}
 	let channel = bot.getChannel(channelId);
 	if (!channel) {
-		console.warn("handleChain Failed to getChannel" + getDateStr());
+		console.warn("handleChain Failed to getChannel  " + getDateStr());
 		return;
 	}
 	if (json["chain"] == undefined || json["chain"]["current"] == undefined) {
-		console.warn("handleChain Failed to read json" + getDateStr());
+		console.warn("handleChain Failed to read json  " + getDateStr());
 		return;
 	}
 
@@ -157,7 +157,7 @@ async function handleChain(json) {
 	let timeoutSeconds = timeout - timeoutMinutes * 60;
 	let timeoutMinutesPadded = timeoutMinutes.toString().length < 2 ? "0" + timeoutMinutes.toString() : timeoutMinutes.toString();
 	let timeoutSecondsPadded = timeoutSeconds.toString().length < 2 ? "0" + timeoutSeconds.toString() : timeoutSeconds.toString();
-	let chainStr = ":mega: Chain: " + current + "/" + max + "  Timeout: " + timeoutMinutesPadded + ":" + timeoutSecondsPadded + getDateStr();
+	let chainStr = ":mega: Chain: " + current + "/" + max + "  Timeout: " + timeoutMinutesPadded + ":" + timeoutSecondsPadded;
 	let messageStr = "";
 
 	if (cooldown > 0) {
@@ -166,13 +166,13 @@ async function handleChain(json) {
 	}
 
 	if (lastCurrentChain != current) {
-		console.log("handleChain current changed" + getDateStr());
+		console.log("handleChain current changed  " + getDateStr());
 		twoMinutesWarned = false;
 		oneMinuteWarned = false;
 		lastCurrentChain = current;
 	}
 	if (lastMaxChain != max) {
-		console.log("handleChain max changed" + getDateStr());
+		console.log("handleChain max changed  " + getDateStr());
 		tenHitsWarned = false;
 		fiveHitsWarned = false;
 		twoMinutesWarned = false;
@@ -183,31 +183,31 @@ async function handleChain(json) {
 	if (max >= MIN_REPORTING_MAX_CHAIN && timeout <= 60) { // Warn 1 minute till timeout
 		if (!oneMinuteWarned) {
 			oneMinuteWarned = true;
-			messageStr = chainStr + "\n" + ":alarm_clock: Chain is timing out in :one: minute! Make another hit to keep the chain alive.";
+			messageStr = chainStr + "\n" + ":alarm_clock: The chain is timing out in 1 minute! Make another hit to keep the chain alive.";
 		}
 	} else if (max >= MIN_REPORTING_MAX_CHAIN && timeout <= 120) { // Warn 2 minutes till timeout
 		if (!twoMinutesWarned) {
 			twoMinutesWarned = true;
-			messageStr = chainStr + "\n" + ":alarm_clock: Chain is timing out in :two: minutes! Make another hit to keep the chain alive.";
+			messageStr = chainStr + "\n" + ":alarm_clock: The chain is timing out in 2 minutes! Make another hit to keep the chain alive.";
 		}
 	}
 
 	if (max >= MIN_REPORTING_MAX_CHAIN && max - current <= 5) { // Warn 5 hits till bonus
 		if (!fiveHitsWarned) {
 			fiveHitsWarned = true;
-			messageStr = chainStr + "\n" + ":reminder_ribbon: " + (max - current) + " hits till bonus hit! Make sure the bonus hit is on enemy faction.";
+			messageStr = chainStr + "\n" + ":reminder_ribbon: " + (max - current) + " hits till bonus hit!";
 		}
 	} else if (max >= MIN_REPORTING_MAX_CHAIN && max - current <= 10) {  // Warn 10 hits till bonus
 		if (!tenHitsWarned) {
 			tenHitsWarned = true;
-			messageStr = chainStr + "\n" + ":reminder_ribbon: " + (max - current) + " hits till bonus hit! Make sure the bonus hit is on enemy faction.";
+			messageStr = chainStr + "\n" + ":reminder_ribbon: " + (max - current) + " hits till bonus hit!";
 		}
 	}
 
 	if (messageStr != "") {
 		try {
 			console.log(`handleChain Sending message: [${messageStr}]`);
-			await channel.createMessage((roleId == "" ? "" : "<@&" + roleId + "> \n") + messageStr);
+			await channel.createMessage((roleId == "" ? "" : "<@&" + roleId + ">  ") + getDateStr() + "\n" + messageStr);
 		} catch (err) {
 			console.warn(err);
 		}
@@ -221,7 +221,7 @@ function getDateStr() {  //  Example:  TCT: 09:48:05
 	let hour = date.getUTCHours().toString().length < 2 ? "0" + date.getUTCHours() : date.getUTCHours();
 	let minute = date.getUTCMinutes().toString().length < 2 ? "0" + date.getUTCMinutes() : date.getUTCMinutes();
 	let second = date.getUTCSeconds().toString().length < 2 ? "0" + date.getUTCSeconds() : date.getUTCSeconds();
-	return "  TCT: " + hour + ":" + minute + ":" + second;
+	return "TCT: " + hour + ":" + minute + ":" + second;
 }
 
 async function fetchWar() {
@@ -240,21 +240,21 @@ async function handleWar(json) {
 		return;
 	}
 	if (!json) {
-		console.warn("handleWar Empty json" + getDateStr());
+		console.warn("handleWar Empty json  " + getDateStr());
 		return;
 	}
 	let channel = bot.getChannel(channelId);
 	if (!channel) {
-		console.warn("handleWar Failed to getChannel" + getDateStr());
+		console.warn("handleWar Failed to getChannel  " + getDateStr());
 		return;
 	}
 	if (json["ranked_wars"] == undefined) {
-		console.warn("handleWar Failed to read json" + getDateStr());
+		console.warn("handleWar Failed to read json  " + getDateStr());
 		return;
 	}
 	let rwJson = json["ranked_wars"];
 	if (Object.keys(rwJson).length <= 0 || Object.keys(rwJson)[0] == undefined) {
-		console.warn("handleWar Failed to read rwJson" + getDateStr());
+		console.warn("handleWar Failed to read rwJson  " + getDateStr());
 		return;
 	}
 	let warStartTimestamp = parseInt(rwJson[Object.keys(rwJson)[0]]["war"]["start"]) * 1000;
@@ -267,9 +267,9 @@ async function handleWar(json) {
 	const minutes = Math.floor((countDown % 3600000) / 60000);
 	if ((hours == 23 && minutes >= 55 && minutes < 60) || (hours == 4 && minutes >= 55 && minutes < 60) || (hours == 0 && minutes >= 55 && minutes < 60) || (hours == 0 && minutes >= 7 && minutes < 12)) {
 		try {
-			let messageStr = ":crossed_swords: Ranked war will begin in " + (hours > 0 ? "" + hours + " hours, " : "") + (minutes > 0 ? "" + minutes + " minutes." : ".");
+			let messageStr = ":crossed_swords: The Ranked War will begin in " + (hours > 0 ? "" + hours + " hours, " : "") + (minutes > 0 ? "" + minutes + " minutes." : ".");
 			console.log(`handleWar Sending message: [${messageStr}]`);
-			await channel.createMessage((roleId == "" ? "" : "<@&" + roleId + "> \n") + messageStr + getDateStr());
+			await channel.createMessage((roleId == "" ? "" : "<@&" + roleId + ">  ") + getDateStr() + "\n" + messageStr);
 		} catch (err) {
 			console.warn(err);
 		}
