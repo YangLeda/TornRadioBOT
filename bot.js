@@ -77,7 +77,7 @@ bot.on("messageCreate", async (msg) => {
 				let timeoutSeconds = timeout - timeoutMinutes * 60;
 				let timeoutMinutesPadded = timeoutMinutes.toString().length < 2 ? "0" + timeoutMinutes.toString() : timeoutMinutes.toString();
 				let timeoutSecondsPadded = timeoutSeconds.toString().length < 2 ? "0" + timeoutSeconds.toString() : timeoutSeconds.toString();
-				let chainStr = ":mega: Chain: " + current + "/" + max + "  Timeout: " + timeoutMinutesPadded + ":" + timeoutSecondsPadded + (cooldown > 0 ? "  In cooldown" : "");
+				let chainStr = "Chain: " + current + "/" + max + "  Timeout: " + timeoutMinutesPadded + ":" + timeoutSecondsPadded + (cooldown > 0 ? "  In cooldown" : "");
 				try {
 					await msg.channel.createMessage(getDateStr() + "\n" + chainStr + (isReportingChain ? "" : "\n:robot: Chain reporting is off."));
 				} catch (err) {
@@ -157,7 +157,7 @@ async function handleChain(json) {
 	let timeoutSeconds = timeout - timeoutMinutes * 60;
 	let timeoutMinutesPadded = timeoutMinutes.toString().length < 2 ? "0" + timeoutMinutes.toString() : timeoutMinutes.toString();
 	let timeoutSecondsPadded = timeoutSeconds.toString().length < 2 ? "0" + timeoutSeconds.toString() : timeoutSeconds.toString();
-	let chainStr = ":mega: Chain: " + current + "/" + max + "  Timeout: " + timeoutMinutesPadded + ":" + timeoutSecondsPadded;
+	let chainStr = "Chain: " + current + "/" + max + "  Timeout: " + timeoutMinutesPadded + ":" + timeoutSecondsPadded;
 	let messageStr = "";
 
 	if (cooldown > 0) {
@@ -183,24 +183,24 @@ async function handleChain(json) {
 	if (max >= MIN_REPORTING_MAX_CHAIN && timeout <= 60) { // Warn 1 minute till timeout
 		if (!oneMinuteWarned) {
 			oneMinuteWarned = true;
-			messageStr = chainStr + "\n" + ":alarm_clock: The chain is timing out in 1 minute! Make another hit to keep the chain alive.";
+			messageStr = chainStr + "\n" + ":alarm_clock: The chain is timing out in 1 minute!";
 		}
 	} else if (max >= MIN_REPORTING_MAX_CHAIN && timeout <= 120) { // Warn 2 minutes till timeout
 		if (!twoMinutesWarned) {
 			twoMinutesWarned = true;
-			messageStr = chainStr + "\n" + ":alarm_clock: The chain is timing out in 2 minutes! Make another hit to keep the chain alive.";
+			messageStr = chainStr + "\n" + ":alarm_clock: The chain is timing out in 2 minutes!";
 		}
 	}
 
-	if (max >= MIN_REPORTING_MAX_CHAIN && max - current <= 5) { // Warn 5 hits till bonus
+	if (max >= MIN_REPORTING_MAX_CHAIN && max - current <= 10) { // Warn 10 hits till bonus
 		if (!fiveHitsWarned) {
 			fiveHitsWarned = true;
-			messageStr = chainStr + "\n" + ":reminder_ribbon: " + (max - current) + " hits till bonus hit!";
+			messageStr = chainStr + "\n" + ":chains: " + (max - current) + " hits before bonus hit!";
 		}
-	} else if (max >= MIN_REPORTING_MAX_CHAIN && max - current <= 10) {  // Warn 10 hits till bonus
+	} else if (max >= MIN_REPORTING_MAX_CHAIN && max - current <= 20) {  // Warn 20 hits till bonus
 		if (!tenHitsWarned) {
 			tenHitsWarned = true;
-			messageStr = chainStr + "\n" + ":reminder_ribbon: " + (max - current) + " hits till bonus hit!";
+			messageStr = chainStr + "\n" + ":chains: " + (max - current) + " hits before bonus hit!";
 		}
 	}
 
@@ -216,12 +216,12 @@ async function handleChain(json) {
 	}
 }
 
-function getDateStr() {  //  Example:  TCT: 09:48:05
+function getDateStr() {  //  Example: 09:48:05
 	let date = new Date(Date.now());
 	let hour = date.getUTCHours().toString().length < 2 ? "0" + date.getUTCHours() : date.getUTCHours();
 	let minute = date.getUTCMinutes().toString().length < 2 ? "0" + date.getUTCMinutes() : date.getUTCMinutes();
 	let second = date.getUTCSeconds().toString().length < 2 ? "0" + date.getUTCSeconds() : date.getUTCSeconds();
-	return "TCT: " + hour + ":" + minute + ":" + second;
+	return "" + hour + ":" + minute + ":" + second;
 }
 
 async function fetchWar() {
