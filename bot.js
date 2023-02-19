@@ -6,7 +6,7 @@ import * as eris from 'eris';
 const BOT_TOKEN = process.env.BOT_TOKEN;
 const TORN_API_KEY = process.env.TORN_API_KEY;
 const FACTION_ID = "41066";
-const FETCH_CHAIN_INTERVAL = 5000;  // 5 seconds
+const FETCH_CHAIN_INTERVAL = 10000;  // 10 seconds
 const FETCH_WAR_INTERVAL = 300000;  // 5 minutes
 const MIN_REPORTING_MAX_CHAIN = 50;
 const ROLE_NAME = "chain alert";
@@ -260,7 +260,7 @@ async function handleWar(json) {
 	let warStartTimestamp = parseInt(rwJson[Object.keys(rwJson)[0]]["war"]["start"]) * 1000;
 	let countDown = warStartTimestamp - Date.now();
 	if (countDown <= 0) {
-		console.log("handleWar war ended " + warStartTimestamp + " " + Date.now() + getDateStr());
+		console.log("handleWar war already started " + warStartTimestamp + " " + Date.now() + getDateStr());
 		return;
 	}
 	const hours = Math.floor(countDown / 3600000);
